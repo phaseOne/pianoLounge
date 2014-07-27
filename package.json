@@ -1,0 +1,23 @@
+{
+  "name": "pianoLounge",
+  "description": "A node-based, socket.io-powered, pianobar web GUI server",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "DEBUG=pianoLounge:*,http:* nodemon app.js"
+  },
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/phaseOne/pianoLounge.git"
+  },
+  "dependencies": {
+    "body-parser": "~1.0.0",
+    "cookie-parser": "~1.0.1",
+    "debug": "~0.7.4",
+    "express": "~3.4.8",
+    "jade": "~1.3.0",
+    "morgan": "1.2.x",
+    "socket.io": "^1.0.6",
+    "static-favicon": "~1.0.0",
+    "stylus": "0.42.3"
+  }
+}
