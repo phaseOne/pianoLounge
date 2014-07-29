@@ -1,5 +1,21 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+
+  h1 Now Playing: #{status.station}
+  if status.track
+    img(src=status.track.coverArt)
+    p.
+      #{status.track.title}<br/>
+      by #{status.track.artist}<br/>
+      on #{status.track.album}
+  else
+    p Nothing playing right now
+  div
+    span #{status.time.elapsed || '00:00'}
+    meter(max=status.time.duration, value=status.time.elapsed, style='width: 100%, height: 24px')
+    span #{status.time.remaining || '-00:00'}
+  h1 Stations
+  ul
+    each stationItem in stationList
+      li= stationItem

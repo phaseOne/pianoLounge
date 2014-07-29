@@ -8,7 +8,8 @@ var express       = require('express'),
     Writable      = require('stream').Writable
 
 var Pianod        = require('./lib/pianod').Pianod,
-    pL            = require('./lib/logger')
+    pL            = require('./lib/logger'),
+    pandoraAuth   = require('./pandoraAuth')
 
 /// set up app
 var app = express()
@@ -22,7 +23,7 @@ var server = http.Server(app),
     io = require('socket.io')(server)
 
 server.listen(app.get('port'), function () {
-  pL.info('Server listening on port ' + server.address().port)
+  pL.info('server listening on port ' + server.address().port)
 })
 
 // redirect morgan to debug
@@ -54,12 +55,21 @@ app.get('/', function(req, res) {
 /// events
 
 io.on('connection', function (socket) {
-  pL.info('User connected')
+  pL.info('user connected')
   io.emit('status', pianod.status)
+  io.emit('stationList', pianod.stations)
 })
 
 pianod.on('connection', function (version) {
-  pL.pianod.info('Connected to pianod version '+version)
+  pL.pianod.info('connected to pianod version '+version)
+  pianod.login(pandoraAuth.username, pandoraAuth.password, function () {
+    pianod.getStations()
+  })
+})
+
+pianod.on('stationList', function () {
+  pL.pianod.info('stations updated')
+  io.emit('stationList', pianod.stations)
 })
 
 pianod.on('activity', function (info) {

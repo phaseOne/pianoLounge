@@ -7,10 +7,19 @@ html
     script(src='https://cdn.socket.io/socket.io-1.0.6.js')
 
     script.
-      var socket = io.connect('http://localhost:3000');
+      var socket = io.connect('http://localhost:3000')
       socket.on('status', function (data) {
-        console.log(data);
-      });
+        console.log('status')
+        console.log(data)
+      })
+      socket.on('activity', function (data) {
+        console.log('activity')
+        console.log(data)
+      })
+      socket.on('stationList', function (data) {
+        console.log('stationList')
+        console.log(data)
+      })
 
   body
     block content
