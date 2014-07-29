@@ -7,9 +7,6 @@ var express       = require('express'),
     bodyParser    = require('body-parser'),
     Writable      = require('stream').Writable
 
-var routes  = require('./routes'),
-    users   = require('./routes/user')
-
 var Pianod        = require('./lib/pianod').Pianod,
     pL            = require('./lib/logger')
 
@@ -50,8 +47,9 @@ app.use(app.router)
 
 /// routes
 
-app.get('/', routes.index)
-app.get('/users', users.list)
+app.get('/', function(req, res) {
+  res.render('index', { status: pianod.status, stationList: pianod.stations })
+})
 
 /// events
 
