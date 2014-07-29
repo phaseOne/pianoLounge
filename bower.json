@@ -1,0 +1,21 @@
+{
+  "name": "pianoLounge",
+  "version": "0.0.1",
+  "homepage": "https://github.com/phaseOne/pianoLounge",
+  "authors": [
+    "Evan Bovie <evan@bovie.me>"
+  ],
+  "description": "A node-based, socket.io-powered, pianod/pianobar web GUI server",
+  "main": "./app.js",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "MPL-2.0",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

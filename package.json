@@ -2,6 +2,9 @@
   "name": "pianoLounge",
   "description": "A node-based, socket.io-powered, pianod/pianobar web GUI server",
   "version": "0.0.1",
+  "authors": [
+    "Evan Bovie <evan@bovie.me>"
+  ],
   "scripts": {
     "start": "DEBUG=pianoLounge:*,pianod:*,http:* nodemon app.js"
   },
