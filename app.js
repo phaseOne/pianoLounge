@@ -42,8 +42,8 @@ app.use(logger('dev', { stream: morganDebug }))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded())
 app.use(cookieParser())
-app.use(require('stylus').middleware(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(require("connect-assets")({paths: ['assets/bootstrap']}))
 app.use(app.router)
 
 /// routes

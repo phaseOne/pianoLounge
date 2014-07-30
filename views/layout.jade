@@ -1,10 +1,11 @@
 doctype html
 html
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
+    title= status.station ? 'pianoLounge – '+status.station : 'pianoLounge'
+    != css("bootstrap")
 
     script(src='https://cdn.socket.io/socket.io-1.0.6.js')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js')
 
     script.
       var socket = io.connect('http://localhost:3000')
