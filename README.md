@@ -10,7 +10,7 @@ pianoLounge
 
 ## Instructions
 ### Create pandora authfile
-Create a file named pandoraAuth.js in the root directory like this
+Create a file named `pandoraAuth.js` in the root directory like this
 
 ```js
 module.exports = {
