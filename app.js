@@ -22,10 +22,6 @@ app.set('port', process.env.PORT || 3000)
 var server = http.Server(app),
     io = require('socket.io')(server)
 
-server.listen(app.get('port'), function () {
-  pL.info('server listening on port ' + server.address().port)
-})
-
 // redirect morgan to debug
 var morganDebug = Writable({ decodeStrings: false })
 morganDebug._write = function (data, enc, next) {
@@ -54,16 +50,50 @@ app.get('/', function(req, res) {
 
 /// events
 
-io.on('connection', function (socket) {
-  pL.info('user connected')
-  io.emit('status', pianod.status)
-  io.emit('stationList', pianod.stations)
+pianod.on('connection', function(version) {
+  pL.pianod.info('connected to pianod version '+version)
+
+  pianod.login(pandoraAuth.username, pandoraAuth.password, function(msg) {
+    pL.pianod.info(msg)
+
+    pianod.getStations(function(stations) {
+      // Wait for stations, then start server
+      server.listen(app.get('port'), function() {
+        pL.info('server listening on port ' + server.address().port)
+      })
+    })
+  })
 })
 
-pianod.on('connection', function (version) {
-  pL.pianod.info('connected to pianod version '+version)
-  pianod.login(pandoraAuth.username, pandoraAuth.password, function () {
-    pianod.getStations()
+io.on('connection', function(socket) {
+  pL.info('user connected')
+  socket.emit('status', pianod.status)
+  socket.emit('stationList', pianod.stations)
+
+  socket.on('transport', function(data) {
+    pL.debug(data)
+
+    switch (data) {
+      case 'play':
+      case 'pause':
+      case 'skip':
+        pianod.control(data)
+        break;
+    }
+  })
+
+  socket.on('volume', function(data) {
+    pL.debug(data)
+
+    if (data === 'get') {
+      pianod.getVolume(function(vol) {
+        socket.emit('volume', vol)
+      })
+    } else if (typeof data === 'number') {
+      pianod.setVolume(Math.min(Math.max(data, 0), 100), function(vol) {
+        socket.emit('volume', vol)
+      })
+    }
   })
 })
 
