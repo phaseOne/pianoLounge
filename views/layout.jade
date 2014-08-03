@@ -1,26 +1,34 @@
 doctype html
-html
+html(lang='en')
   head
-    title= status.station ? 'pianoLounge – '+status.station : 'pianoLounge'
-    != css("bootstrap")
+  block head
+      meta(charset='utf-8')
+      meta(name='viewport', content='width=device-width, initial-scale=1, minimal-ui')
 
-    script(src='https://cdn.socket.io/socket.io-1.0.6.js')
-    script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js')
+      //title= status.station ? 'pianoLounge – '+status.station : 'pianoLounge'
 
-    script.
-      var socket = io.connect('http://localhost:3000')
-      socket.on('status', function (data) {
-        console.log('status')
-        console.log(data)
-      })
-      socket.on('activity', function (data) {
-        console.log('activity')
-        console.log(data)
-      })
-      socket.on('stationList', function (data) {
-        console.log('stationList')
-        console.log(data)
-      })
+      != css("bootstrap")
+
+      script(src='https://cdn.socket.io/socket.io-1.0.6.js')
+      script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js')
+
+      script.
+        var socket = io.connect('http://localhost:3000')
+        socket.on('status', function (data) {
+          console.log('status')
+          console.log(data)
+        })
+        socket.on('activity', function (data) {
+          console.log('activity')
+          console.log(data)
+        })
+        socket.on('stationList', function (data) {
+          console.log('stationList')
+          console.log(data)
+        })
+        socket.on('volume', function (data) {
+          console.log(data)
+        })
 
   body
     block content
