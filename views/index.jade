@@ -2,37 +2,35 @@ extends layout
 
 block content
   include ../assets/icons/icons.svg
-  nav.navbar
-    .container-fluid
-      img(src='/assets/img/logo.svg')
+  nav.topnav
+    img(src='/assets/img/logo.svg')
 
   .content
-    .container-fluid
-      .row
-        .col-sm-8#player
-          h1.station #{status.station}
-          if status.track.title
-            .songInfo
-              .artist #{status.track.artist}
-              .title #{status.track.title}
-              .album #{status.track.album}
-            img(src=status.track.coverArt)
+    #player
+      h1.station #{status.station}
+      if status.track.title
+        .songInfo
+          .artist #{status.track.artist}
+          .title #{status.track.title}
+          .album #{status.track.album}
+        img(src=status.track.coverArt)
 
-          else
-            p Nothing playing right now
-        .col-sm-4.hidden-xs#stations
-          ul
-            each stationItem in stationList
-              li= stationItem
+      else
+        p Nothing playing right now
+    #stations
+      ul
+        each stationItem in stationList
+          li= stationItem
 
   .controller
     .times
       .time.elapsed #{status.time.string.elapsed || '00:00'}
       .time.remaining #{'-'+status.time.string.remaining || '-00:00'}
-    meter(max=status.time.duration, value=status.time.elapsed)
-    .controls.container-fluid
-      .songInfo.hidden-xs
-        img.pull-left(src=status.track.coverArt)
+    progress(max=status.time.duration, value=status.time.elapsed)
+    .controls
+      .songInfo
+        .overlay
+        img(src=status.track.coverArt)
         .artist #{status.track.artist}
         .title #{status.track.title}
         .album #{status.track.album}
