@@ -22,6 +22,10 @@ app.set('port', process.env.PORT || 3000)
 var server = http.Server(app),
     io = require('socket.io')(server)
 
+// assets setup
+var assets = require("connect-assets")({paths: ['assets/bootstrap']})
+assets.environment.enable("autoprefixer")
+
 // redirect morgan to debug
 var morganDebug = Writable({ decodeStrings: false })
 morganDebug._write = function (data, enc, next) {
@@ -39,7 +43,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded())
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(require("connect-assets")({paths: ['assets/bootstrap']}))
+app.use(assets)
 app.use(app.router)
 
 /// routes
