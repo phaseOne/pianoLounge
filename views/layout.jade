@@ -14,10 +14,38 @@ html(lang='en')
       script(src='//cdn.jsdelivr.net/jquery.velocity/0.10.0/jquery.velocity.min.js')
 
       script.
-        var socket = io.connect('http://localhost:3000')
+        var socket = io.connect('http://localhost:3000'),
+            pL = {
+              progressMan: {
+                id: null,
+                timer: function() {
+                  pL.progressMan.id = setInterval(function() {
+                    pL.status.time.elapsed = Math.round((new Date().getTime() - pL.status.time.timestamp)/1000)
+                    pL.status.time.remaining = Math.max(pL.status.time.duration - pL.status.time.elapsed, 0)
+                    $('progress').attr('value', pL.status.time.elapsed)
+                    $('.time.elapsed').text(secToString(pL.status.time.elapsed))
+                    $('.time.remaining').text('-'+secToString(pL.status.time.remaining))
+                  }, 500)
+                }
+              },
+              updateTracks : function() {
+                
+              }
+            }
+
         socket.on('status', function (data) {
           console.log('status')
-          console.log(data)
+          pL.status = data
+
+          switch (pL.status.state) {
+            case 'playing':
+              pL.progressMan.timer()
+              break
+            case 'ended':
+            case 'paused':
+              clearInterval(pL.progressMan.id)
+              break
+          }
         })
         socket.on('activity', function (data) {
           console.log('activity')
@@ -25,11 +53,21 @@ html(lang='en')
         })
         socket.on('stationList', function (data) {
           console.log('stationList')
-          console.log(data)
+          pL.stationList = data
         })
         socket.on('volume', function (data) {
           console.log(data)
         })
+
+        function secToString(sec) {
+          var min = Math.floor(sec / 60).pad(),
+              sec = (sec % 60).pad()
+          return min + ':' + sec
+        }
+
+        Number.prototype.pad = function() {
+          return (this < 10) ? '0'+this : this.toString()
+        }
 
   body
     block content
