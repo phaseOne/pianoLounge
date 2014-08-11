@@ -25,7 +25,7 @@ block content
   .controller
     .times
       .time.elapsed #{status.time.string.elapsed || '00:00'}
-      .time.remaining #{'-'+status.time.string.remaining || '-00:00'}
+      .time.remaining #{status.time.string.remaining ? '-'+status.time.string.remaining : '-00:00'}
     progress(max=status.time.duration, value=status.time.elapsed)
     .controls
       .songInfo
