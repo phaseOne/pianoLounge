@@ -3,8 +3,14 @@
 
 @zTimes:      -1;
 @zPlayhead: 1000;
+@zLoading:     2000;
 
-* { box-sizing: border-box }
+@keyframes spin {
+  from  { transform: rotate(0deg) }
+  to    { transform: rotate(360deg) }
+}
+
+* { box-sizing: border-box; }
 
 html, body {
   margin: 0;
@@ -15,6 +21,30 @@ html, body {
 body {
   display: flex;
   flex-direction: column;
+}
+
+.loading {
+  position: absolute;
+  width: 100%;
+  background: #fafafa;
+  z-index: @zLoading;
+  justify-content: center;
+
+  display: flex;
+  opacity: 0;
+  visibility: hidden;
+
+  transition: visibility 0 linear .2s, opacity .2s linear;
+
+  &.visible {
+    visibility: visible;
+    opacity: 1;
+    transition-delay: 0;
+  }
+}
+
+.i-spinner {
+  animation: spin .5s infinite steps(8);
 }
 
 nav.topnav, .controller {
@@ -158,6 +188,7 @@ nav.topnav {
 
     .transport {
       display: flex;
+      position: relative;
       flex: 1.5;
 
       margin: 0 4%;
@@ -165,9 +196,9 @@ nav.topnav {
       svg {
         height: 40px;
         width: 40px;
-
-        flex: 1;
       }
+
+      > svg { flex: 1; } // don't target the spinner
 
       .i-thumbs-down { transform: scaleX(-1) }
     }

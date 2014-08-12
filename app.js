@@ -80,6 +80,7 @@ io.on('connection', function(socket) {
     switch (data) {
       case 'play':
       case 'pause':
+      case 'playpause':
       case 'skip':
         pianod.control(data)
         break;

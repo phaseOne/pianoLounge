@@ -35,11 +35,13 @@ block content
         .title #{status.track.title}
         .album #{status.track.album}
       .transport
+        .loading: svg.i-spinner: use(xlink:href='#i-spinner')
+        
         svg.i-thumbs-down: use(xlink:href='#i-thumbs-down')
-        svg: use(xlink:href='#i-thumbs-up')
+        svg.i-thumbs-up: use(xlink:href='#i-thumbs-up')
 
-        svg: use(xlink:href='#i-play')
-        svg: use(xlink:href='#i-skip')
+        svg.i-play: use(xlink:href='#i-play')
+        svg.i-skip: use(xlink:href='#i-skip')
       .volume
         svg: use(xlink:href='#i-vol')
         input(type='range', min='0', max='100', value='20')

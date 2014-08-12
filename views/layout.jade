@@ -29,20 +29,27 @@ html(lang='en')
                 }
               },
               updateTracks : function() {
-                
+                //
               }
             }
 
         socket.on('status', function (data) {
-          console.log('status')
           pL.status = data
+          console.log('status: '+pL.status.state)
+
+          $('progress').attr('max', pL.status.time.duration)
 
           switch (pL.status.state) {
             case 'playing':
               pL.progressMan.timer()
+              $('.i-play use').attr('xlink:href', '#i-pause')
+              $('.transport .loading').removeClass('visible')
               break
             case 'ended':
             case 'paused':
+              pL.status.state === 'ended' ? $('.transport .loading').addClass('visible') :  $('.transport .loading').removeClass('visible')
+
+              $('.i-play use').attr('xlink:href', '#i-play')
               clearInterval(pL.progressMan.id)
               break
           }
@@ -57,6 +64,13 @@ html(lang='en')
         })
         socket.on('volume', function (data) {
           console.log(data)
+        })
+
+        $(function() {
+          $('.i-play').click(function() {
+            socket.emit('transport', 'playpause')
+            $('.transport .loading').addClass('visible')
+          })
         })
 
         function secToString(sec) {
